@@ -1,99 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
-namespace CSArp.Model
+namespace CSArp.Model;
+
+public class IPV4Subnet
 {
-    public class IPV4Subnet
+    public IPAddress First { get; private set; }
+    public IPAddress Last { get; private set; }
+    public IPAddress NetworkAddress { get; private set; }
+    public IPAddress BroadcastAddress { get; private set; }
+
+    private readonly uint firstAddressAsUint;
+    private readonly uint lastAddressAsUint;
+
+    public IPV4Subnet(IPAddress currentAddress, IPAddress subnetMask)
     {
-        public IPAddress First { get; private set; }
-        public IPAddress Last { get; private set; }
-        public IPAddress NetworkAddress { get; private set; }
-        public IPAddress BroadcastAddress { get; private set; }
+        // Convert the IP address to bytes.
+        var ipBytes = currentAddress.GetAddressBytes();
 
-        private readonly uint firstAddressAsUint;
-        private readonly uint lastAddressAsUint;
+        // Get bytes from subnet mask
+        var maskBytes = subnetMask.GetAddressBytes();
 
-        public IPV4Subnet(IPAddress currentAddress, IPAddress subnetMask)
+        var firstIpAddressAsByte = new byte[ipBytes.Length];
+        var lastIpAddressAsByte = new byte[ipBytes.Length];
+
+        // Calculate the bytes of the start and end IP addresses.
+        for (var i = 0; i < ipBytes.Length; i++)
         {
-            // Convert the IP address to bytes.
-            var ipBytes = currentAddress.GetAddressBytes();
-
-            // Get bytes from subnet mask
-            var maskBytes = subnetMask.GetAddressBytes();
-
-            var firstIpAddressAsByte = new byte[ipBytes.Length];
-            var lastIpAddressAsByte = new byte[ipBytes.Length];
-
-            // Calculate the bytes of the start and end IP addresses.
-            for (var i = 0; i < ipBytes.Length; i++)
-            {
-                firstIpAddressAsByte[i] = (byte)(ipBytes[i] & maskBytes[i]);
-                lastIpAddressAsByte[i] = (byte)(ipBytes[i] | ~maskBytes[i]);
-            }
-
-            // Set network address and broadcast address
-            NetworkAddress = new IPAddress(firstIpAddressAsByte);
-            BroadcastAddress = new IPAddress(lastIpAddressAsByte);
-
-            // Exclude network address and broadcast address
-            firstIpAddressAsByte[3] += 1;
-            lastIpAddressAsByte[3] -= 1;
-
-            // Convert the bytes to IP addresses.
-            First = new IPAddress(firstIpAddressAsByte);
-            Last = new IPAddress(lastIpAddressAsByte);
-
-            // Convert addresses to uint for future use
-            firstAddressAsUint = ConvertToUint(First);
-            lastAddressAsUint = ConvertToUint(Last);
+            firstIpAddressAsByte[i] = (byte)(ipBytes[i] & maskBytes[i]);
+            lastIpAddressAsByte[i] = (byte)(ipBytes[i] | ~maskBytes[i]);
         }
 
-        public int Count
-        {
-            get
-            {
-                return (int)(lastAddressAsUint - firstAddressAsUint + 1);
-            }
-        }
+        // Set network address and broadcast address
+        NetworkAddress = new IPAddress(firstIpAddressAsByte);
+        BroadcastAddress = new IPAddress(lastIpAddressAsByte);
 
-        public bool Contains(IPAddress ipaddress)
-        {
-            var address = ConvertToUint(ipaddress);
-            return firstAddressAsUint <= address && address <= lastAddressAsUint;
-        }
+        // Exclude network address and broadcast address
+        firstIpAddressAsByte[3] += 1;
+        lastIpAddressAsByte[3] -= 1;
 
-        public List<IPAddress> ToList()
-        {
-            var list = new List<IPAddress>();
+        // Convert the bytes to IP addresses.
+        First = new IPAddress(firstIpAddressAsByte);
+        Last = new IPAddress(lastIpAddressAsByte);
 
-            while (GetEnumerator().MoveNext())
-            {
-                list.Add(GetEnumerator().Current);
-            }
+        // Convert addresses to uint for future use
+        firstAddressAsUint = ConvertToUint(First);
+        lastAddressAsUint = ConvertToUint(Last);
+    }
 
-            return list;
-        }
-        private IEnumerator<IPAddress> GetEnumerator()
-        {
-            for (var adr = firstAddressAsUint; adr <= lastAddressAsUint; adr++)
-            {
-                yield return ConvertToIPv4Address(adr);
-            }
-        }
+    public int Count => (int)(lastAddressAsUint - firstAddressAsUint + 1);
 
-        private uint ConvertToUint(IPAddress ipAddress)
-        {
-            var addressBytes = ipAddress.GetAddressBytes();
-            Array.Reverse(addressBytes);
-            return BitConverter.ToUInt32(addressBytes, 0);
-        }
+    public bool Contains(IPAddress ipaddress)
+    {
+        var address = ConvertToUint(ipaddress);
+        return firstAddressAsUint <= address && address <= lastAddressAsUint;
+    }
 
-        private IPAddress ConvertToIPv4Address(uint value)
-        {
-            var addressBytes = BitConverter.GetBytes(value);
-            Array.Reverse(addressBytes);
-            return new IPAddress(addressBytes);
-        }
+    public List<IPAddress> ToList()
+    {
+        var list = new List<IPAddress>();
+        for (var adr = firstAddressAsUint; adr <= lastAddressAsUint; adr++)
+            list.Add(ConvertToIPv4Address(adr));
+        return list;
+    }
+
+    private static uint ConvertToUint(IPAddress ipAddress)
+    {
+        var addressBytes = ipAddress.GetAddressBytes();
+        Array.Reverse(addressBytes);
+        return BitConverter.ToUInt32(addressBytes, default);
+    }
+
+    private static IPAddress ConvertToIPv4Address(uint value)
+    {
+        var addressBytes = BitConverter.GetBytes(value);
+        Array.Reverse(addressBytes);
+        return new IPAddress(addressBytes);
     }
 }

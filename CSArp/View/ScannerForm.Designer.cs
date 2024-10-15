@@ -15,11 +15,11 @@ namespace CSArp.View
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        protected override async void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
-                ExitGracefully();
+                await ExitGracefully();
                 components.Dispose();
             }
             base.Dispose(disposing);
