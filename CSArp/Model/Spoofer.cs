@@ -27,7 +27,7 @@ public class Spoofer
 
         foreach (var target in targetlist)
         {
-            var myipaddress = networkAdapter.ReadCurrentIpV4Address();
+            //var myipaddress = networkAdapter.ReadCurrentIpV4Address();
             var arppacketforgatewayrequest = new ArpPacket(ArpOperation.Request, "00-00-00-00-00-00".Parse(), gatewayipaddress, networkAdapter.MacAddress, target.Key);
             var ethernetpacketforgatewayrequest = new EthernetPacket(networkAdapter.MacAddress, gatewaymacaddress, EthernetType.Arp);
             ethernetpacketforgatewayrequest.PayloadPacket = arppacketforgatewayrequest;

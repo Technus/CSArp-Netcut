@@ -48,13 +48,13 @@ public class NetworkScanner
         StartForegroundScan(view, networkAdapter, gatewayIp, 5000);
     }
 
-    private void StartForegroundScan(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout)
+    private static void StartForegroundScan(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout)
     {
         // Obtain subnet information
         var subnet = networkAdapter.ReadCurrentSubnet();
 
         // Obtain current IP address
-        var sourceAddress = networkAdapter.ReadCurrentIpV4Address();
+        //var sourceAddress = networkAdapter.ReadCurrentIpV4Address();
 
         // TODO: Send and capture ICMP packages for both MAC address and alive status.
         #region Sending ARP requests to probe for all possible IP addresses on LAN
@@ -179,10 +179,10 @@ public class NetworkScanner
             addressList.AddRange(subnet.AsEnumerable());
 
             // Remove current address from the list and add to ARP table statically
-            _ = addressList.Remove(networkAdapter.ReadCurrentIpV4Address());
-            _ = ArpTable.Instance.Add(networkAdapter.ReadCurrentIpV4Address(), networkAdapter.MacAddress);
+            _ = addressList.Remove(sourceAddress);
+            _ = ArpTable.Instance.Add(sourceAddress, networkAdapter.MacAddress);
             _ = view.ClientListView.Items.Add(new ListViewItem([
-                    networkAdapter.ReadCurrentIpV4Address().ToString(),
+                    sourceAddress.ToString(),
                     networkAdapter.MacAddress.ToString("-"),
                     "On",
                     ApplicationSettings.GetSavedClientNameFromMAC(networkAdapter.MacAddress.ToString("-")),
