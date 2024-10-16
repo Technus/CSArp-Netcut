@@ -27,6 +27,7 @@ namespace CSArp.Model;
 public class NetworkScanner
 {
     private const string prefix = "Scan";
+    private const string _dateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
     /// <summary>
     /// Populates listview with machines connected to the LAN
@@ -190,7 +191,7 @@ public class NetworkScanner
                         networkAdapter.MacAddress.ToString("-"),
                         "On",
                         ApplicationSettings.GetSavedClientNameFromMAC(networkAdapter.MacAddress.ToString("-")),
-                        DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
+                        DateTime.MaxValue.ToString(_dateTimeFormat),
                     ]));
 
             // Start
@@ -210,6 +211,18 @@ public class NetworkScanner
                         await SendArpRequest(networkAdapter, targetIpAddress, cts.Token);
                     }
                     await Task.Delay(1000);
+
+                    var now = DateTime.Now; 
+                    view.MainForm.Invoke(() =>
+                    {
+                        for (i = 0; i < view.ClientListView.Items.Count; i++)
+                        {
+                            var item = view.ClientListView.Items[i];
+                            var t = now.Subtract(DateTime.ParseExact(item.SubItems[4].Text, _dateTimeFormat, default));
+                            if (t > TimeSpan.FromSeconds(3.5))
+                                item.SubItems[2].Text = "Off";
+                        }
+                    });
                 }
                 while (!token.IsCancellationRequested && loop);
             }, prefix);
@@ -281,7 +294,7 @@ public class NetworkScanner
                     arppacket.SenderHardwareAddress.ToString("-"),
                     "On",
                     isGateway ? "GATEWAY" : ApplicationSettings.GetSavedClientNameFromMAC(arppacket.SenderHardwareAddress.ToString("-")),
-                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
+                    DateTime.Now.ToString(_dateTimeFormat),
                 ];
 
                 if (!contains)
@@ -293,6 +306,7 @@ public class NetworkScanner
                         var item = view.ClientListView.Items[i];
                         if (item.SubItems[1].Text == data[1] && item.SubItems[0].Text == data[0])
                         {
+                            item.SubItems[2].Text = "On";
                             item.SubItems[4].Text = data[4];
                             break;
                         }
