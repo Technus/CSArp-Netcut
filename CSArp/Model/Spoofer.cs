@@ -19,7 +19,7 @@ public class Spoofer
 
     private Dictionary<IPAddress, PhysicalAddress> engagedclientlist;
 
-    public void Start(Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, NpcapDevice networkAdapter)
+    public Task Start(Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, NpcapDevice networkAdapter, CancellationToken token = default)
     {
         engagedclientlist = [];
         if (!networkAdapter.Opened)
@@ -32,10 +32,11 @@ public class Spoofer
             var ethernetpacketforgatewayrequest = new EthernetPacket(networkAdapter.MacAddress, gatewaymacaddress, EthernetType.Arp);
             ethernetpacketforgatewayrequest.PayloadPacket = arppacketforgatewayrequest;
 
-            var cts = new CancellationTokenSource();
-            TaskBuffer.Add(cts, () => SendSpoofingPacket(target.Key, target.Value, ethernetpacketforgatewayrequest, networkAdapter, cts.Token), prefix);
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+            TaskBuffer.Add(cts, () => SendSpoofingPackets(target.Key, target.Value, ethernetpacketforgatewayrequest, networkAdapter, cts.Token), prefix);
             engagedclientlist.Add(target.Key, target.Value);
         }
+        return Task.CompletedTask;
     }
 
     public async ValueTask StopAll()
@@ -44,19 +45,21 @@ public class Spoofer
         engagedclientlist?.Clear();
     }
 
-    private static Task SendSpoofingPacket(IPAddress ipAddress, PhysicalAddress physicalAddress, EthernetPacket ethernetpacketforgatewayrequest, NpcapDevice captureDevice, CancellationToken token = default)
+    private static async Task SendSpoofingPackets(IPAddress ipAddress, PhysicalAddress physicalAddress, EthernetPacket ethernetpacketforgatewayrequest, NpcapDevice captureDevice, CancellationToken token = default)
     {
         DebugOutput.Print($"Spoofing target {physicalAddress} @ {ipAddress}");
         try
         {
             while (!token.IsCancellationRequested)
+            {
                 captureDevice.SendPacket(ethernetpacketforgatewayrequest);
+                await Task.Delay(10);
+            }
         }
         catch (PcapException ex)
         {
             DebugOutput.Print($"PcapException @ DisconnectReconnect.Disconnect() [{ex.Message}]");
         }
         DebugOutput.Print($"Spoofing thread @ DisconnectReconnect.Disconnect() for {physicalAddress} @ {ipAddress} is terminating.");
-        return Task.CompletedTask;
     }
 }

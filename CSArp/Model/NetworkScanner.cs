@@ -248,7 +248,8 @@ public class NetworkScanner
         var arprequestpacket = new ArpPacket(ArpOperation.Request, "00-00-00-00-00-00".Parse(), targetIpAddress, networkAdapter.MacAddress, networkAdapter.ReadCurrentIpV4Address());
         var ethernetpacket = new EthernetPacket(networkAdapter.MacAddress, "FF-FF-FF-FF-FF-FF".Parse(), EthernetType.Arp);
         ethernetpacket.PayloadPacket = arprequestpacket;
-        token.ThrowIfCancellationRequested();
+        if (token.IsCancellationRequested)
+            return;
         networkAdapter.SendPacket(ethernetpacket);
         Debug.WriteLine("ARP request is sent to: {0}", targetIpAddress);
     }
@@ -285,10 +286,13 @@ public class NetworkScanner
                 isGateway = true;
             }
 
-            token.ThrowIfCancellationRequested();
+            if (token.IsCancellationRequested)
+                return;
 
-            view.ClientListView.Invoke(() =>
+            view.MainForm.Invoke(() =>
             {
+                view.ToolStripStatusScan.Text = ArpTable.Instance.Count + " device(s) found";
+
                 string[] data = [
                     arppacket.SenderProtocolAddress.ToString(),
                     arppacket.SenderHardwareAddress.ToString("-"),
@@ -313,10 +317,6 @@ public class NetworkScanner
                     }
                 }
             });
-
-            token.ThrowIfCancellationRequested();
-
-            _ = view.MainForm.Invoke(() => view.ToolStripStatusScan.Text = ArpTable.Instance.Count + " device(s) found");
         }
     }
 }
