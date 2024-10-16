@@ -12,6 +12,7 @@ using CSArp.Model.Extensions;
 using System.Threading.Tasks;
 using SharpPcap.Npcap;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 /*
  Reference:
@@ -90,47 +91,18 @@ public class NetworkScanner
         });
         try
         {
+            var sourceAddress = networkAdapter.ReadCurrentIpV4Address();
+
             RawCapture rawcapture = null;
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            while (!token.IsCancellationRequested && (rawcapture = networkAdapter.GetNextPacket()) != null && stopwatch.ElapsedMilliseconds <= foregroundScanTimeout)
+            while (!token.IsCancellationRequested && 
+                (rawcapture = networkAdapter.GetNextPacket()) != null && 
+                stopwatch.ElapsedMilliseconds <= foregroundScanTimeout)
             {
                 var packet = Packet.ParsePacket(rawcapture.LinkLayerType, rawcapture.Data);
-                var arppacket = packet.Extract<ArpPacket>();
-                if (!ArpTable.Instance.ContainsKey(arppacket.SenderProtocolAddress) && arppacket.SenderProtocolAddress.ToString() != "0.0.0.0" && subnet.Contains(arppacket.SenderProtocolAddress))
-                {
-                    var isGateway = false;
-                    if (arppacket.SenderProtocolAddress.Equals(gatewayIp))
-                    {
-                        DebugOutput.Print("Found gateway!");
-                        isGateway = true;
-                    }
-                    DebugOutput.Print($"Added {arppacket.SenderProtocolAddress} @ {arppacket.SenderHardwareAddress.ToString("-")}");
-                    _ = ArpTable.Instance.Add(arppacket.SenderProtocolAddress, arppacket.SenderHardwareAddress);
-                    view.ClientListView.Invoke(new Action(() =>
-                    {
-                        _ = isGateway
-                        ? view.ClientListView.Items.Add(new ListViewItem([
-                                arppacket.SenderProtocolAddress.ToString(),
-                                    arppacket.SenderHardwareAddress.ToString("-"),
-                                    "On",
-                                    "GATEWAY",
-                                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
-                            ]))
-                        : view.ClientListView.Items.Add(new ListViewItem([
-                                arppacket.SenderProtocolAddress.ToString(),
-                                    arppacket.SenderHardwareAddress.ToString("-"),
-                                    "On",
-                                    ApplicationSettings.GetSavedClientNameFromMAC(arppacket.SenderHardwareAddress.ToString("-")),
-                                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
-                            ]));
-                    }));
-                    //Debug.Print("{0} @ {1}", arppacket.SenderProtocolAddress, arppacket.SenderHardwareAddress);
-                }
-                //int percentageprogress = (int)((float)stopwatch.ElapsedMilliseconds / scanduration * 100);
-                //view.MainForm.Invoke(new Action(() => view.ToolStripStatusScan.Text = "Scanning " + percentageprogress + "%"));
-                //view.MainForm.Invoke(new Action(() => view.ToolStripProgressBarScan.Value = percentageprogress));
-                //Debug.Print(packet.ToString() + "\n");
+
+                ParseArpResponse(view, subnet, gatewayIp, packet, sourceAddress, networkAdapter.MacAddress, token);
             }
             stopwatch.Stop();
             view.MainForm.Invoke(() =>
@@ -207,15 +179,19 @@ public class NetworkScanner
 
             // Obtain current IP address
             var sourceAddress = networkAdapter.ReadCurrentIpV4Address();
+            
+            var oldMAC = ArpTable.Instance.Add(sourceAddress, networkAdapter.MacAddress);
 
-            _ = ArpTable.Instance.Add(sourceAddress, networkAdapter.MacAddress);
-            _ = view.ClientListView.Items.Add(new ListViewItem([
-                    sourceAddress.ToString(),
-                    networkAdapter.MacAddress.ToString("-"),
-                    "On",
-                    ApplicationSettings.GetSavedClientNameFromMAC(networkAdapter.MacAddress.ToString("-")),
-                    DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
-                ]));
+            var contains = networkAdapter.MacAddress.Equals(oldMAC);
+
+            if(!contains)
+                _ = view.ClientListView.Items.Add(new ListViewItem([
+                        sourceAddress.ToString(),
+                        networkAdapter.MacAddress.ToString("-"),
+                        "On",
+                        ApplicationSettings.GetSavedClientNameFromMAC(networkAdapter.MacAddress.ToString("-")),
+                        DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss:fff"),
+                    ]));
 
             // Start
             var cts = CancellationTokenSource.CreateLinkedTokenSource(token);
@@ -264,13 +240,29 @@ public class NetworkScanner
         Debug.WriteLine("ARP request is sent to: {0}", targetIpAddress);
     }
 
-    private static void ParseArpResponse(IView view, IPV4Subnet subnet, IPAddress gatewayIp, CaptureEventArgs e, IPAddress sourceAddress, CancellationToken token = default)
+    private static void ParseArpResponse(IView view, IPV4Subnet subnet, IPAddress gatewayIp,
+        CaptureEventArgs e, IPAddress sourceAddress, CancellationToken token = default) =>
+        ParseArpResponse(view, subnet, gatewayIp, 
+            Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data), sourceAddress, e.Device.MacAddress, token);
+
+    private static void ParseArpResponse(IView view, IPV4Subnet subnet, IPAddress gatewayIp,
+        Packet packet, IPAddress sourceAddress, PhysicalAddress sourceMac, CancellationToken token = default)
     {
-        var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
         var arppacket = packet.Extract<ArpPacket>();
-        if (!token.IsCancellationRequested && !arppacket.SenderProtocolAddress.Equals(sourceAddress) && !arppacket.SenderProtocolAddress.Equals(IPAddress.None) && subnet.Contains(arppacket.SenderProtocolAddress))
+        if (!token.IsCancellationRequested && 
+            !arppacket.SenderProtocolAddress.Equals(sourceAddress) && 
+            !arppacket.SenderHardwareAddress.Equals(sourceMac) && 
+            !arppacket.SenderProtocolAddress.Equals(IPAddress.None) && 
+            subnet.Contains(arppacket.SenderProtocolAddress))
         {
-            var contains = ArpTable.Instance.ContainsKey(arppacket.SenderProtocolAddress);
+            var oldMAC = ArpTable.Instance.Add(arppacket.SenderProtocolAddress, arppacket.SenderHardwareAddress);
+
+            var contains = arppacket.SenderHardwareAddress.Equals(oldMAC);
+
+            if (!contains)
+            {
+                DebugOutput.Print($"Added {arppacket.SenderProtocolAddress} @ {arppacket.SenderHardwareAddress.ToString("-")} from background scan!");
+            }
 
             var isGateway = false;
             if (arppacket.SenderProtocolAddress.Equals(gatewayIp))
@@ -278,12 +270,6 @@ public class NetworkScanner
                 if (!contains)
                     DebugOutput.Print("Found gateway!");
                 isGateway = true;
-            }
-
-            if (!contains)
-            {
-                DebugOutput.Print($"Added {arppacket.SenderProtocolAddress} @ {arppacket.SenderHardwareAddress.ToString("-")} from background scan!");
-                _ = ArpTable.Instance.Add(arppacket.SenderProtocolAddress, arppacket.SenderHardwareAddress);
             }
 
             token.ThrowIfCancellationRequested();
@@ -302,7 +288,7 @@ public class NetworkScanner
                     view.ClientListView.Items.Add(new ListViewItem(data));
                 else
                 {
-                    for (int i = 0; i < view.ClientListView.Items.Count; i++)
+                    for (var i = 0; i < view.ClientListView.Items.Count; i++)
                     {
                         var item = view.ClientListView.Items[i];
                         if (item.SubItems[1].Text == data[1] && item.SubItems[0].Text == data[0])

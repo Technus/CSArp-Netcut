@@ -19,8 +19,12 @@ public sealed class ArpTable
     {
     }
 
-    public bool Add(IPAddress ipAddress, PhysicalAddress physicalAddress) => 
-        _dictionary.TryAdd(ipAddress, physicalAddress);
+    public PhysicalAddress Add(IPAddress ipAddress, PhysicalAddress physicalAddress)
+    {
+        _dictionary.TryGetValue(ipAddress, out var key);
+        _dictionary[ipAddress] = physicalAddress;
+        return key;
+    }
 
     public bool ContainsKey(IPAddress ipAddress) => 
         _dictionary.ContainsKey(ipAddress);
