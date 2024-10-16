@@ -91,7 +91,7 @@ public class Presenter
         if (_view.ToolStripStatusScan.Text.IndexOf("Scanning") != -1) //if a scan isn't active already
             return;
 
-        await ArpSpoofer.StopAll(); // first disengage spoofing threads
+        await ArpSpoofer.StopAll(_view); // first disengage spoofing threads
         NetworkScanner.StartScan(_view, selectedDevice, gatewayIpAddress);
     }
 
@@ -133,7 +133,7 @@ public class Presenter
                   _view.ClientListView.SelectedItems[parseindex++].SubItems[2].Text = "Off";
               }));
         }
-        ArpSpoofer.Start(targetlist, gatewayIpAddress, gatewayPhysicalAddress, selectedDevice);
+        ArpSpoofer.Start(_view, targetlist, gatewayIpAddress, gatewayPhysicalAddress, selectedDevice);
     }
 
     /// <summary>
@@ -141,7 +141,7 @@ public class Presenter
     /// </summary>
     public async ValueTask ReconnectClients() //selective reconnection not availabe at this time and frankly, not that useful
     {
-        await ArpSpoofer.StopAll();
+        await ArpSpoofer.StopAll(_view);
         foreach (ListViewItem entry in _view.ClientListView.Items)
         {
             entry.SubItems[2].Text = "On";

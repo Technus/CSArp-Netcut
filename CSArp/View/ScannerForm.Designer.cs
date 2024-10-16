@@ -67,7 +67,8 @@ namespace CSArp.View
             clientListView = new ListView();
             columnHeaderIP = new ColumnHeader();
             columnHeaderMAC = new ColumnHeader();
-            columnHeaderCutoffStatus = new ColumnHeader();
+            columnHeaderStatus = new ColumnHeader();
+            columnHeaderSpoofing = new ColumnHeader();
             columnHeaderClientname = new ColumnHeader();
             columnHeaderTimestamp = new ColumnHeader();
             columnHeaderSN = new ColumnHeader();
@@ -295,7 +296,7 @@ namespace CSArp.View
             // clientListView
             // 
             clientListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            clientListView.Columns.AddRange(new ColumnHeader[] { columnHeaderIP, columnHeaderMAC, columnHeaderCutoffStatus, columnHeaderClientname, columnHeaderTimestamp });
+            clientListView.Columns.AddRange(new ColumnHeader[] { columnHeaderIP, columnHeaderMAC, columnHeaderStatus, columnHeaderSpoofing, columnHeaderClientname, columnHeaderTimestamp });
             clientListView.FullRowSelect = true;
             clientListView.GridLines = true;
             clientListView.Location = new System.Drawing.Point(14, 31);
@@ -310,17 +311,21 @@ namespace CSArp.View
             // columnHeaderIP
             // 
             columnHeaderIP.Text = "IP Address";
-            columnHeaderIP.Width = 131;
+            columnHeaderIP.Width = 100;
             // 
             // columnHeaderMAC
             // 
             columnHeaderMAC.Text = "MAC Address";
-            columnHeaderMAC.Width = 151;
+            columnHeaderMAC.Width = 125;
             // 
-            // columnHeaderCutoffStatus
+            // columnHeaderStatus
             // 
-            columnHeaderCutoffStatus.Text = "Status";
-            columnHeaderCutoffStatus.Width = 55;
+            columnHeaderStatus.Text = "Status";
+            columnHeaderStatus.Width = 45;
+            // 
+            // columnHeaderSpoofing
+            // 
+            columnHeaderSpoofing.Text = "Spoof";
             // 
             // columnHeaderClientname
             // 
@@ -393,7 +398,7 @@ namespace CSArp.View
         private System.Windows.Forms.ColumnHeader columnHeaderSN;
         private System.Windows.Forms.ColumnHeader columnHeaderIP;
         private System.Windows.Forms.ColumnHeader columnHeaderMAC;
-        private System.Windows.Forms.ColumnHeader columnHeaderCutoffStatus;
+        private System.Windows.Forms.ColumnHeader columnHeaderStatus;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cutoffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reconnectToolStripMenuItem;
@@ -421,6 +426,7 @@ namespace CSArp.View
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private ToolStripMenuItem stopNetworkScanToolStripMenuItem;
         private ColumnHeader columnHeaderTimestamp;
+        private ColumnHeader columnHeaderSpoofing;
     }
 }
 

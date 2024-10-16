@@ -9,6 +9,8 @@ using CSArp.Model.Utilities;
 using CSArp.Model.Extensions;
 using System.Threading.Tasks;
 using SharpPcap.Npcap;
+using CSArp.View;
+using System.Linq;
 
 namespace CSArp.Model;
 
@@ -19,11 +21,24 @@ public class Spoofer
 
     private Dictionary<IPAddress, PhysicalAddress> engagedclientlist;
 
-    public Task Start(Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, NpcapDevice networkAdapter, CancellationToken token = default)
+    public Task Start(IView view, Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, NpcapDevice networkAdapter, CancellationToken token = default)
     {
         engagedclientlist = [];
         if (!networkAdapter.Opened)
             networkAdapter.Open();
+
+        view.MainForm.Invoke(() =>
+        {
+            foreach (var data in targetlist)
+            {
+                for (var i = 0; i < view.ClientListView.Items.Count; i++)
+                {
+                    var item = view.ClientListView.Items[i];
+                    if (item.SubItems[1].Text == data.Value.ToString("-") && item.SubItems[0].Text == data.Key.ToString())
+                        item.SubItems[3].Text = "On";
+                }
+            }
+        });
 
         foreach (var target in targetlist)
         {
@@ -39,8 +54,16 @@ public class Spoofer
         return Task.CompletedTask;
     }
 
-    public async ValueTask StopAll()
+    public async ValueTask StopAll(IView view)
     {
+        view.MainForm.Invoke(() =>
+        {
+            for (int i = 0; i < view.ClientListView.Items.Count; i++)
+            {
+                var item = view.ClientListView.Items[i];
+                item.SubItems[3].Text = "Off";
+            }
+        });
         await TaskBuffer.StopThreadByName(prefix);
         engagedclientlist?.Clear();
     }

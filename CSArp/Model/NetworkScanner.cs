@@ -190,6 +190,7 @@ public class NetworkScanner
                         sourceAddress.ToString(),
                         networkAdapter.MacAddress.ToString("-"),
                         "On",
+                        "Off",
                         ApplicationSettings.GetSavedClientNameFromMAC(networkAdapter.MacAddress.ToString("-")),
                         DateTime.MaxValue.ToString(_dateTimeFormat),
                     ]));
@@ -218,8 +219,8 @@ public class NetworkScanner
                         for (i = 0; i < view.ClientListView.Items.Count; i++)
                         {
                             var item = view.ClientListView.Items[i];
-                            var t = now.Subtract(DateTime.ParseExact(item.SubItems[4].Text, _dateTimeFormat, default));
-                            if (t > TimeSpan.FromSeconds(3.5))
+                            var t = now.Subtract(DateTime.ParseExact(item.SubItems[5].Text, _dateTimeFormat, default));
+                            if (t > TimeSpan.FromSeconds(4.5))
                                 item.SubItems[2].Text = "Off";
                         }
                     });
@@ -297,6 +298,7 @@ public class NetworkScanner
                     arppacket.SenderProtocolAddress.ToString(),
                     arppacket.SenderHardwareAddress.ToString("-"),
                     "On",
+                    "Off",
                     isGateway ? "GATEWAY" : ApplicationSettings.GetSavedClientNameFromMAC(arppacket.SenderHardwareAddress.ToString("-")),
                     DateTime.Now.ToString(_dateTimeFormat),
                 ];
@@ -311,7 +313,7 @@ public class NetworkScanner
                         if (item.SubItems[1].Text == data[1] && item.SubItems[0].Text == data[0])
                         {
                             item.SubItems[2].Text = "On";
-                            item.SubItems[4].Text = data[4];
+                            item.SubItems[5].Text = data[5];
                             break;
                         }
                     }
