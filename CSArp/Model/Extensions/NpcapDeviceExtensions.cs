@@ -17,7 +17,7 @@ public static class NpcapDeviceExtensions
     {
         var addresses = device.Addresses.First(addr => addr.Addr.ipAddress != null);
         var currentAddress = addresses.Addr.ipAddress;
-        var subnetMask = new IPAddress(addresses.Netmask.ipAddress.GetAddressBytes().Reverse().ToArray());// Sharppcap returns reversed mask
+        var subnetMask = new IPAddress(addresses.Netmask.ipAddress.GetAddressBytes());// Sharppcap returns reversed mask
 
         return new IPV4Subnet(currentAddress, subnetMask);
     }

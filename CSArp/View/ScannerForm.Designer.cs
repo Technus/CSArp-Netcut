@@ -33,377 +33,351 @@ namespace CSArp.View
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScannerForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemSaveSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemMinimize = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemChooseInterface = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBoxDevicelist = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.ClientNametoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBoxClientName = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.cutoffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItemRefreshClients = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutCSArpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelSpringer = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusScan = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripProgressBarScan = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.clearStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clientListView = new System.Windows.Forms.ListView();
-            this.columnHeaderIP = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderMAC = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderCutoffStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderClientname = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderSN = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.stopNetworkScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(ScannerForm));
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItemSaveSettings = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            toolStripMenuItemMinimize = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            toolStripMenuItemChooseInterface = new ToolStripMenuItem();
+            toolStripComboBoxDevicelist = new ToolStripComboBox();
+            toolStripSeparator3 = new ToolStripSeparator();
+            ClientNametoolStripMenuItem = new ToolStripMenuItem();
+            toolStripTextBoxClientName = new ToolStripTextBox();
+            toolStripSeparator1 = new ToolStripSeparator();
+            cutoffToolStripMenuItem = new ToolStripMenuItem();
+            reconnectToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
+            toolStripMenuItemRefreshClients = new ToolStripMenuItem();
+            stopNetworkScanToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
+            aboutCSArpToolStripMenuItem = new ToolStripMenuItem();
+            statusStrip1 = new StatusStrip();
+            toolStripStatus = new ToolStripStatusLabel();
+            toolStripStatusLabelSpringer = new ToolStripStatusLabel();
+            toolStripStatusScan = new ToolStripStatusLabel();
+            toolStripProgressBarScan = new ToolStripProgressBar();
+            toolStripSplitButton1 = new ToolStripSplitButton();
+            clearStripMenuItem = new ToolStripMenuItem();
+            saveStripMenuItem = new ToolStripMenuItem();
+            showLogToolStripMenuItem = new ToolStripMenuItem();
+            clientListView = new ListView();
+            columnHeaderIP = new ColumnHeader();
+            columnHeaderMAC = new ColumnHeader();
+            columnHeaderCutoffStatus = new ColumnHeader();
+            columnHeaderClientname = new ColumnHeader();
+            columnHeaderTimestamp = new ColumnHeader();
+            columnHeaderSN = new ColumnHeader();
+            notifyIcon1 = new NotifyIcon(components);
+            richTextBoxLog = new RichTextBox();
+            saveFileDialog1 = new SaveFileDialog();
+            menuStrip1.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(570, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, editToolStripMenuItem, helpToolStripMenuItem });
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Padding = new Padding(7, 2, 0, 2);
+            menuStrip1.Size = new System.Drawing.Size(665, 24);
+            menuStrip1.TabIndex = 0;
+            menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemSaveSettings,
-            this.toolStripSeparator4,
-            this.toolStripMenuItemMinimize,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemSaveSettings, toolStripSeparator4, toolStripMenuItemMinimize, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
             // 
             // toolStripMenuItemSaveSettings
             // 
-            this.toolStripMenuItemSaveSettings.Name = "toolStripMenuItemSaveSettings";
-            this.toolStripMenuItemSaveSettings.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.toolStripMenuItemSaveSettings.Size = new System.Drawing.Size(163, 22);
-            this.toolStripMenuItemSaveSettings.Text = "Save";
-            this.toolStripMenuItemSaveSettings.ToolTipText = "Save current settings";
-            this.toolStripMenuItemSaveSettings.Click += new System.EventHandler(this.toolStripMenuItemSaveSettings_Click);
+            toolStripMenuItemSaveSettings.Name = "toolStripMenuItemSaveSettings";
+            toolStripMenuItemSaveSettings.ShortcutKeys = Keys.Control | Keys.S;
+            toolStripMenuItemSaveSettings.Size = new System.Drawing.Size(163, 22);
+            toolStripMenuItemSaveSettings.Text = "Save";
+            toolStripMenuItemSaveSettings.ToolTipText = "Save current settings";
+            toolStripMenuItemSaveSettings.Click += toolStripMenuItemSaveSettings_Click;
             // 
             // toolStripSeparator4
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(160, 6);
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new System.Drawing.Size(160, 6);
             // 
             // toolStripMenuItemMinimize
             // 
-            this.toolStripMenuItemMinimize.Name = "toolStripMenuItemMinimize";
-            this.toolStripMenuItemMinimize.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this.toolStripMenuItemMinimize.Size = new System.Drawing.Size(163, 22);
-            this.toolStripMenuItemMinimize.Text = "Minimize";
-            this.toolStripMenuItemMinimize.ToolTipText = "Minimize to tray";
-            this.toolStripMenuItemMinimize.Click += new System.EventHandler(this.toolStripMenuItemMinimize_Click);
+            toolStripMenuItemMinimize.Name = "toolStripMenuItemMinimize";
+            toolStripMenuItemMinimize.ShortcutKeys = Keys.Control | Keys.T;
+            toolStripMenuItemMinimize.Size = new System.Drawing.Size(163, 22);
+            toolStripMenuItemMinimize.Text = "Minimize";
+            toolStripMenuItemMinimize.ToolTipText = "Minimize to tray";
+            toolStripMenuItemMinimize.Click += toolStripMenuItemMinimize_Click;
             // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Q;
+            exitToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
-            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemChooseInterface,
-            this.toolStripSeparator3,
-            this.ClientNametoolStripMenuItem,
-            this.toolStripSeparator1,
-            this.cutoffToolStripMenuItem,
-            this.reconnectToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.toolStripMenuItemRefreshClients,
-            this.stopNetworkScanToolStripMenuItem});
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
-            this.editToolStripMenuItem.Text = "Edit";
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemChooseInterface, toolStripSeparator3, ClientNametoolStripMenuItem, toolStripSeparator1, cutoffToolStripMenuItem, reconnectToolStripMenuItem, toolStripSeparator2, toolStripMenuItemRefreshClients, stopNetworkScanToolStripMenuItem });
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            editToolStripMenuItem.Text = "Edit";
             // 
             // toolStripMenuItemChooseInterface
             // 
-            this.toolStripMenuItemChooseInterface.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBoxDevicelist});
-            this.toolStripMenuItemChooseInterface.Name = "toolStripMenuItemChooseInterface";
-            this.toolStripMenuItemChooseInterface.Size = new System.Drawing.Size(193, 22);
-            this.toolStripMenuItemChooseInterface.Text = "Choose interface";
-            this.toolStripMenuItemChooseInterface.ToolTipText = "Select the network card to operate on";
+            toolStripMenuItemChooseInterface.DropDownItems.AddRange(new ToolStripItem[] { toolStripComboBoxDevicelist });
+            toolStripMenuItemChooseInterface.Name = "toolStripMenuItemChooseInterface";
+            toolStripMenuItemChooseInterface.Size = new System.Drawing.Size(193, 22);
+            toolStripMenuItemChooseInterface.Text = "Choose interface";
+            toolStripMenuItemChooseInterface.ToolTipText = "Select the network card to operate on";
             // 
             // toolStripComboBoxDevicelist
             // 
-            this.toolStripComboBoxDevicelist.Name = "toolStripComboBoxDevicelist";
-            this.toolStripComboBoxDevicelist.Size = new System.Drawing.Size(121, 23);
+            toolStripComboBoxDevicelist.Name = "toolStripComboBoxDevicelist";
+            toolStripComboBoxDevicelist.Size = new System.Drawing.Size(121, 23);
             // 
             // toolStripSeparator3
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(190, 6);
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(190, 6);
             // 
             // ClientNametoolStripMenuItem
             // 
-            this.ClientNametoolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBoxClientName});
-            this.ClientNametoolStripMenuItem.Name = "ClientNametoolStripMenuItem";
-            this.ClientNametoolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.ClientNametoolStripMenuItem.Text = "Enter Client Name";
-            this.ClientNametoolStripMenuItem.ToolTipText = "Enter a name for the selected client";
+            ClientNametoolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { toolStripTextBoxClientName });
+            ClientNametoolStripMenuItem.Name = "ClientNametoolStripMenuItem";
+            ClientNametoolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            ClientNametoolStripMenuItem.Text = "Enter Client Name";
+            ClientNametoolStripMenuItem.ToolTipText = "Enter a name for the selected client";
             // 
             // toolStripTextBoxClientName
             // 
-            this.toolStripTextBoxClientName.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.toolStripTextBoxClientName.Name = "toolStripTextBoxClientName";
-            this.toolStripTextBoxClientName.Size = new System.Drawing.Size(100, 23);
-            this.toolStripTextBoxClientName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.toolStripTextBoxClientName_KeyUp);
+            toolStripTextBoxClientName.Name = "toolStripTextBoxClientName";
+            toolStripTextBoxClientName.Size = new System.Drawing.Size(100, 23);
+            toolStripTextBoxClientName.KeyUp += toolStripTextBoxClientName_KeyUp;
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(190, 6);
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(190, 6);
             // 
             // cutoffToolStripMenuItem
             // 
-            this.cutoffToolStripMenuItem.Name = "cutoffToolStripMenuItem";
-            this.cutoffToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.cutoffToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.cutoffToolStripMenuItem.Text = "Start Spoofing";
-            this.cutoffToolStripMenuItem.ToolTipText = "Disconnect selected clients";
-            this.cutoffToolStripMenuItem.Click += new System.EventHandler(this.cutoffToolStripMenuItem_Click);
+            cutoffToolStripMenuItem.Name = "cutoffToolStripMenuItem";
+            cutoffToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.X;
+            cutoffToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            cutoffToolStripMenuItem.Text = "Start Spoofing";
+            cutoffToolStripMenuItem.ToolTipText = "Disconnect selected clients";
+            cutoffToolStripMenuItem.Click += cutoffToolStripMenuItem_Click;
             // 
             // reconnectToolStripMenuItem
             // 
-            this.reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
-            this.reconnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.reconnectToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.reconnectToolStripMenuItem.Text = "Stop Spoofing";
-            this.reconnectToolStripMenuItem.ToolTipText = "Stop arp spoofing";
-            this.reconnectToolStripMenuItem.Click += new System.EventHandler(this.reconnectToolStripMenuItem_Click);
+            reconnectToolStripMenuItem.Name = "reconnectToolStripMenuItem";
+            reconnectToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.R;
+            reconnectToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            reconnectToolStripMenuItem.Text = "Stop Spoofing";
+            reconnectToolStripMenuItem.ToolTipText = "Stop arp spoofing";
+            reconnectToolStripMenuItem.Click += reconnectToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(190, 6);
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new System.Drawing.Size(190, 6);
             // 
             // toolStripMenuItemRefreshClients
             // 
-            this.toolStripMenuItemRefreshClients.Name = "toolStripMenuItemRefreshClients";
-            this.toolStripMenuItemRefreshClients.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.toolStripMenuItemRefreshClients.Size = new System.Drawing.Size(193, 22);
-            this.toolStripMenuItemRefreshClients.Text = "Start Network Scan";
-            this.toolStripMenuItemRefreshClients.ToolTipText = "Refresh active client list";
-            this.toolStripMenuItemRefreshClients.Click += new System.EventHandler(this.toolStripMenuItemRefreshClients_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutCSArpToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutCSArpToolStripMenuItem
-            // 
-            this.aboutCSArpToolStripMenuItem.Name = "aboutCSArpToolStripMenuItem";
-            this.aboutCSArpToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.aboutCSArpToolStripMenuItem.Text = "About CSArp";
-            this.aboutCSArpToolStripMenuItem.Click += new System.EventHandler(this.aboutCSArpToolStripMenuItem_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatus,
-            this.toolStripStatusLabelSpringer,
-            this.toolStripStatusScan,
-            this.toolStripProgressBarScan,
-            this.toolStripSplitButton1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 315);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(570, 24);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatus
-            // 
-            this.toolStripStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
-            this.toolStripStatus.Margin = new System.Windows.Forms.Padding(11, 3, 0, 2);
-            this.toolStripStatus.Name = "toolStripStatus";
-            this.toolStripStatus.Size = new System.Drawing.Size(43, 19);
-            this.toolStripStatus.Text = "Ready";
-            // 
-            // toolStripStatusLabelSpringer
-            // 
-            this.toolStripStatusLabelSpringer.Name = "toolStripStatusLabelSpringer";
-            this.toolStripStatusLabelSpringer.Size = new System.Drawing.Size(261, 19);
-            this.toolStripStatusLabelSpringer.Spring = true;
-            // 
-            // toolStripStatusScan
-            // 
-            this.toolStripStatusScan.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)));
-            this.toolStripStatusScan.Name = "toolStripStatusScan";
-            this.toolStripStatusScan.Size = new System.Drawing.Size(95, 19);
-            this.toolStripStatusScan.Text = "Refresh for scan";
-            // 
-            // toolStripProgressBarScan
-            // 
-            this.toolStripProgressBarScan.Name = "toolStripProgressBarScan";
-            this.toolStripProgressBarScan.Size = new System.Drawing.Size(100, 18);
-            // 
-            // toolStripSplitButton1
-            // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearStripMenuItem,
-            this.saveStripMenuItem,
-            this.showLogToolStripMenuItem});
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(43, 22);
-            this.toolStripSplitButton1.Text = "Log";
-            // 
-            // clearStripMenuItem
-            // 
-            this.clearStripMenuItem.Name = "clearStripMenuItem";
-            this.clearStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.clearStripMenuItem.Text = "Clear";
-            this.clearStripMenuItem.Click += new System.EventHandler(this.clearStripMenuItem_Click);
-            // 
-            // saveStripMenuItem
-            // 
-            this.saveStripMenuItem.Name = "saveStripMenuItem";
-            this.saveStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.saveStripMenuItem.Text = "Save";
-            this.saveStripMenuItem.Click += new System.EventHandler(this.saveStripMenuItem_Click);
-            // 
-            // showLogToolStripMenuItem
-            // 
-            this.showLogToolStripMenuItem.CheckOnClick = true;
-            this.showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
-            this.showLogToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.showLogToolStripMenuItem.Text = "Show log";
-            this.showLogToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.showLogToolStripMenuItem_CheckStateChanged);
-            // 
-            // clientListView
-            // 
-            this.clientListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderIP,
-            this.columnHeaderMAC,
-            this.columnHeaderCutoffStatus,
-            this.columnHeaderClientname});
-            this.clientListView.FullRowSelect = true;
-            this.clientListView.GridLines = true;
-            this.clientListView.HideSelection = false;
-            this.clientListView.Location = new System.Drawing.Point(12, 27);
-            this.clientListView.Name = "clientListView";
-            this.clientListView.ShowItemToolTips = true;
-            this.clientListView.Size = new System.Drawing.Size(546, 285);
-            this.clientListView.TabIndex = 2;
-            this.clientListView.UseCompatibleStateImageBehavior = false;
-            this.clientListView.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeaderIP
-            // 
-            this.columnHeaderIP.Text = "IP Address";
-            this.columnHeaderIP.Width = 131;
-            // 
-            // columnHeaderMAC
-            // 
-            this.columnHeaderMAC.Text = "MAC Address";
-            this.columnHeaderMAC.Width = 151;
-            // 
-            // columnHeaderCutoffStatus
-            // 
-            this.columnHeaderCutoffStatus.Text = "Status";
-            this.columnHeaderCutoffStatus.Width = 55;
-            // 
-            // columnHeaderClientname
-            // 
-            this.columnHeaderClientname.Text = "Client Name";
-            this.columnHeaderClientname.Width = 151;
-            // 
-            // columnHeaderSN
-            // 
-            this.columnHeaderSN.Text = "SN";
-            this.columnHeaderSN.Width = 50;
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.Text = "CSArp";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_OnMouseClick);
-            // 
-            // richTextBoxLog
-            // 
-            this.richTextBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxLog.Location = new System.Drawing.Point(12, 227);
-            this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.richTextBoxLog.Size = new System.Drawing.Size(547, 87);
-            this.richTextBoxLog.TabIndex = 3;
-            this.richTextBoxLog.Text = "";
-            this.richTextBoxLog.Visible = false;
+            toolStripMenuItemRefreshClients.Name = "toolStripMenuItemRefreshClients";
+            toolStripMenuItemRefreshClients.ShortcutKeys = Keys.F5;
+            toolStripMenuItemRefreshClients.Size = new System.Drawing.Size(193, 22);
+            toolStripMenuItemRefreshClients.Text = "Start Network Scan";
+            toolStripMenuItemRefreshClients.ToolTipText = "Refresh active client list";
+            toolStripMenuItemRefreshClients.Click += toolStripMenuItemRefreshClients_Click;
             // 
             // stopNetworkScanToolStripMenuItem
             // 
-            this.stopNetworkScanToolStripMenuItem.Name = "stopNetworkScanToolStripMenuItem";
-            this.stopNetworkScanToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.stopNetworkScanToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.stopNetworkScanToolStripMenuItem.Text = "Stop Network Scan";
-            this.stopNetworkScanToolStripMenuItem.ToolTipText = "Stop scanning";
-            this.stopNetworkScanToolStripMenuItem.Click += new System.EventHandler(this.stopNetworkScanToolStripMenuItem_Click);
+            stopNetworkScanToolStripMenuItem.Name = "stopNetworkScanToolStripMenuItem";
+            stopNetworkScanToolStripMenuItem.ShortcutKeys = Keys.F6;
+            stopNetworkScanToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            stopNetworkScanToolStripMenuItem.Text = "Stop Network Scan";
+            stopNetworkScanToolStripMenuItem.ToolTipText = "Stop scanning";
+            stopNetworkScanToolStripMenuItem.Click += stopNetworkScanToolStripMenuItem_Click;
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutCSArpToolStripMenuItem });
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutCSArpToolStripMenuItem
+            // 
+            aboutCSArpToolStripMenuItem.Name = "aboutCSArpToolStripMenuItem";
+            aboutCSArpToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            aboutCSArpToolStripMenuItem.Text = "About CSArp";
+            aboutCSArpToolStripMenuItem.Click += aboutCSArpToolStripMenuItem_Click;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatus, toolStripStatusLabelSpringer, toolStripStatusScan, toolStripProgressBarScan, toolStripSplitButton1 });
+            statusStrip1.Location = new System.Drawing.Point(0, 364);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new Padding(1, 0, 16, 0);
+            statusStrip1.Size = new System.Drawing.Size(665, 27);
+            statusStrip1.TabIndex = 1;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatus
+            // 
+            toolStripStatus.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Right;
+            toolStripStatus.Margin = new Padding(11, 3, 0, 2);
+            toolStripStatus.Name = "toolStripStatus";
+            toolStripStatus.Size = new System.Drawing.Size(43, 22);
+            toolStripStatus.Text = "Ready";
+            // 
+            // toolStripStatusLabelSpringer
+            // 
+            toolStripStatusLabelSpringer.Name = "toolStripStatusLabelSpringer";
+            toolStripStatusLabelSpringer.Size = new System.Drawing.Size(337, 22);
+            toolStripStatusLabelSpringer.Spring = true;
+            // 
+            // toolStripStatusScan
+            // 
+            toolStripStatusScan.BorderSides = ToolStripStatusLabelBorderSides.Left | ToolStripStatusLabelBorderSides.Right;
+            toolStripStatusScan.Name = "toolStripStatusScan";
+            toolStripStatusScan.Size = new System.Drawing.Size(95, 22);
+            toolStripStatusScan.Text = "Refresh for scan";
+            // 
+            // toolStripProgressBarScan
+            // 
+            toolStripProgressBarScan.Name = "toolStripProgressBarScan";
+            toolStripProgressBarScan.Size = new System.Drawing.Size(117, 21);
+            // 
+            // toolStripSplitButton1
+            // 
+            toolStripSplitButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripSplitButton1.DropDownItems.AddRange(new ToolStripItem[] { clearStripMenuItem, saveStripMenuItem, showLogToolStripMenuItem });
+            toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripSplitButton1.Name = "toolStripSplitButton1";
+            toolStripSplitButton1.Size = new System.Drawing.Size(43, 25);
+            toolStripSplitButton1.Text = "Log";
+            // 
+            // clearStripMenuItem
+            // 
+            clearStripMenuItem.Name = "clearStripMenuItem";
+            clearStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            clearStripMenuItem.Text = "Clear";
+            clearStripMenuItem.Click += clearStripMenuItem_Click;
+            // 
+            // saveStripMenuItem
+            // 
+            saveStripMenuItem.Name = "saveStripMenuItem";
+            saveStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            saveStripMenuItem.Text = "Save";
+            saveStripMenuItem.Click += saveStripMenuItem_Click;
+            // 
+            // showLogToolStripMenuItem
+            // 
+            showLogToolStripMenuItem.CheckOnClick = true;
+            showLogToolStripMenuItem.Name = "showLogToolStripMenuItem";
+            showLogToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            showLogToolStripMenuItem.Text = "Show log";
+            showLogToolStripMenuItem.CheckStateChanged += showLogToolStripMenuItem_CheckStateChanged;
+            // 
+            // clientListView
+            // 
+            clientListView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            clientListView.Columns.AddRange(new ColumnHeader[] { columnHeaderIP, columnHeaderMAC, columnHeaderCutoffStatus, columnHeaderClientname, columnHeaderTimestamp });
+            clientListView.FullRowSelect = true;
+            clientListView.GridLines = true;
+            clientListView.Location = new System.Drawing.Point(14, 31);
+            clientListView.Margin = new Padding(4, 3, 4, 3);
+            clientListView.Name = "clientListView";
+            clientListView.ShowItemToolTips = true;
+            clientListView.Size = new System.Drawing.Size(636, 328);
+            clientListView.TabIndex = 2;
+            clientListView.UseCompatibleStateImageBehavior = false;
+            clientListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeaderIP
+            // 
+            columnHeaderIP.Text = "IP Address";
+            columnHeaderIP.Width = 131;
+            // 
+            // columnHeaderMAC
+            // 
+            columnHeaderMAC.Text = "MAC Address";
+            columnHeaderMAC.Width = 151;
+            // 
+            // columnHeaderCutoffStatus
+            // 
+            columnHeaderCutoffStatus.Text = "Status";
+            columnHeaderCutoffStatus.Width = 55;
+            // 
+            // columnHeaderClientname
+            // 
+            columnHeaderClientname.Text = "Client Name";
+            columnHeaderClientname.Width = 151;
+            // 
+            // columnHeaderTimestamp
+            // 
+            columnHeaderTimestamp.Text = "Timestamp";
+            columnHeaderTimestamp.Width = 140;
+            // 
+            // columnHeaderSN
+            // 
+            columnHeaderSN.Text = "SN";
+            columnHeaderSN.Width = 50;
+            // 
+            // notifyIcon1
+            // 
+            notifyIcon1.Text = "CSArp";
+            notifyIcon1.Visible = true;
+            notifyIcon1.MouseClick += notifyIcon1_OnMouseClick;
+            // 
+            // richTextBoxLog
+            // 
+            richTextBoxLog.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBoxLog.Location = new System.Drawing.Point(14, 262);
+            richTextBoxLog.Margin = new Padding(4, 3, 4, 3);
+            richTextBoxLog.Name = "richTextBoxLog";
+            richTextBoxLog.ScrollBars = RichTextBoxScrollBars.Vertical;
+            richTextBoxLog.Size = new System.Drawing.Size(638, 100);
+            richTextBoxLog.TabIndex = 3;
+            richTextBoxLog.Text = "";
+            richTextBoxLog.Visible = false;
             // 
             // ScannerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 339);
-            this.Controls.Add(this.richTextBoxLog);
-            this.Controls.Add(this.clientListView);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.menuStrip1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "ScannerForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "CSArp";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(665, 391);
+            Controls.Add(richTextBoxLog);
+            Controls.Add(clientListView);
+            Controls.Add(statusStrip1);
+            Controls.Add(menuStrip1);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = menuStrip1;
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "ScannerForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "CSArp";
+            Load += Form1_Load;
+            Resize += Form1_Resize;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -446,6 +420,7 @@ namespace CSArp.View
         private System.Windows.Forms.ToolStripMenuItem clearStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private ToolStripMenuItem stopNetworkScanToolStripMenuItem;
+        private ColumnHeader columnHeaderTimestamp;
     }
 }
 

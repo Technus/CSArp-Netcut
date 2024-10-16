@@ -92,14 +92,10 @@ public class Presenter
             return;
 
         await ArpSpoofer.StopAll(); // first disengage spoofing threads
-        _ = _view.MainForm.BeginInvoke(new Action(() =>
-        {
-            _view.ToolStripStatus.Text = "Ready";
-        }));
         NetworkScanner.StartScan(_view, selectedDevice, gatewayIpAddress);
     }
 
-    public ValueTask StopNetworkScan() => NetworkScanner.StopScan();
+    public ValueTask StopNetworkScan() => NetworkScanner.StopScan(_view);
 
     /// <summary>
     /// Disconnects clients selected in the listview
