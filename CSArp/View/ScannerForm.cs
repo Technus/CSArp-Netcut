@@ -98,15 +98,15 @@ public partial class ScannerForm : Form, IView
 
     private void showLogToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
     {
-        if (ShowLogToolStripMenuItem.Checked == false)
-        {
-            LogRichTextBox.Visible = false;
-            ClientListView.Height = MainForm.Height - 93;
-        }
-        else
+        if (ShowLogToolStripMenuItem.Checked)
         {
             LogRichTextBox.Visible = true;
             ClientListView.Height = MainForm.Height - 184;
+        }
+        else
+        {
+            LogRichTextBox.Visible = false;
+            ClientListView.Height = MainForm.Height - 93;
         }
     }
 

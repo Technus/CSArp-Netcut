@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using SharpPcap;
-using SharpPcap.WinPcap;
 using PacketDotNet;
 using System.Diagnostics;
 using System.Threading;
@@ -11,6 +10,7 @@ using CSArp.View;
 using CSArp.Model.Utilities;
 using CSArp.Model.Extensions;
 using System.Threading.Tasks;
+using SharpPcap.Npcap;
 
 /*
  Reference:
@@ -31,7 +31,7 @@ public class NetworkScanner
     /// </summary>
     /// <param name="view"></param>
     /// <param name="networkAdapter"></param>
-    public void StartScan(IView view, WinPcapDevice networkAdapter, IPAddress gatewayIp)
+    public void StartScan(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp)
     {
         DebugOutput.Print("Refresh client list");
         #region initialization
@@ -48,7 +48,7 @@ public class NetworkScanner
         StartForegroundScan(view, networkAdapter, gatewayIp, 5000);
     }
 
-    private void StartForegroundScan(IView view, WinPcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout)
+    private void StartForegroundScan(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout)
     {
         // Obtain subnet information
         var subnet = networkAdapter.ReadCurrentSubnet();
@@ -69,7 +69,7 @@ public class NetworkScanner
         #endregion
     }
 
-    private async Task AwaitArpRequestQueue(IView view, WinPcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout, IPV4Subnet subnet, CancellationToken token = default)
+    private static async Task AwaitArpRequestQueue(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, int foregroundScanTimeout, IPV4Subnet subnet, CancellationToken token = default)
     {
         try
         {
@@ -79,7 +79,7 @@ public class NetworkScanner
             while (!token.IsCancellationRequested && (rawcapture = networkAdapter.GetNextPacket()) != null && stopwatch.ElapsedMilliseconds <= foregroundScanTimeout)
             {
                 var packet = Packet.ParsePacket(rawcapture.LinkLayerType, rawcapture.Data);
-                var arppacket = (ARPPacket)packet.Extract(typeof(ARPPacket));
+                var arppacket = packet.Extract<ArpPacket>();
                 if (!ArpTable.Instance.ContainsKey(arppacket.SenderProtocolAddress) && arppacket.SenderProtocolAddress.ToString() != "0.0.0.0" && subnet.Contains(arppacket.SenderProtocolAddress))
                 {
                     var isGateway = false;
@@ -133,7 +133,7 @@ public class NetworkScanner
     /// <summary>
     /// Actively monitor ARP packets for signs of new clients after StartForegroundScan active scan is done
     /// </summary>
-    private async Task StartBackgroundScan(IView view, WinPcapDevice networkAdapter, IPAddress gatewayIp, CancellationToken token = default)
+    private static Task StartBackgroundScan(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, CancellationToken token = default)
     {
         try
         {
@@ -154,6 +154,7 @@ public class NetworkScanner
         {
             DebugOutput.Print($"Exception at GetClientList.BackgroundScanStart() [{ex.Message}]");
         }
+        return Task.CompletedTask;
     }
 
     public static ValueTask StopScan()
@@ -162,7 +163,7 @@ public class NetworkScanner
     }
 
     // TODO: Start spoofing for devices regarding online status.
-    private static Task InitiateArpRequestQueue(IView view, WinPcapDevice networkAdapter, IPAddress gatewayIp, CancellationToken token = default)
+    private static Task InitiateArpRequestQueue(IView view, NpcapDevice networkAdapter, IPAddress gatewayIp, CancellationToken token = default)
     {
         try
         {
@@ -212,10 +213,10 @@ public class NetworkScanner
         return Task.CompletedTask;
     }
 
-    private static Task SendArpRequest(WinPcapDevice networkAdapter, IPAddress targetIpAddress, CancellationToken token = default)
+    private static Task SendArpRequest(NpcapDevice networkAdapter, IPAddress targetIpAddress, CancellationToken token = default)
     {
-        var arprequestpacket = new ARPPacket(ARPOperation.Request, "00-00-00-00-00-00".Parse(), targetIpAddress, networkAdapter.MacAddress, networkAdapter.ReadCurrentIpV4Address());
-        var ethernetpacket = new EthernetPacket(networkAdapter.MacAddress, "FF-FF-FF-FF-FF-FF".Parse(), EthernetPacketType.Arp);
+        var arprequestpacket = new ArpPacket(ArpOperation.Request, "00-00-00-00-00-00".Parse(), targetIpAddress, networkAdapter.MacAddress, networkAdapter.ReadCurrentIpV4Address());
+        var ethernetpacket = new EthernetPacket(networkAdapter.MacAddress, "FF-FF-FF-FF-FF-FF".Parse(), EthernetType.Arp);
         ethernetpacket.PayloadPacket = arprequestpacket;
         token.ThrowIfCancellationRequested();
         networkAdapter.SendPacket(ethernetpacket);
@@ -223,10 +224,10 @@ public class NetworkScanner
         return Task.CompletedTask;
     }
 
-    private static Task ParseArpResponse(IView view, IPV4Subnet subnet, IPAddress gatewayIp, CaptureEventArgs e, CancellationToken token = default)
+    private static void ParseArpResponse(IView view, IPV4Subnet subnet, IPAddress gatewayIp, CaptureEventArgs e, CancellationToken token = default)
     {
         var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
-        var arppacket = (ARPPacket)packet.Extract(typeof(ARPPacket));
+        var arppacket = packet.Extract<ArpPacket>();
         if (!token.IsCancellationRequested && !ArpTable.Instance.ContainsKey(arppacket.SenderProtocolAddress) && arppacket.SenderProtocolAddress.ToString() != "0.0.0.0" && subnet.Contains(arppacket.SenderProtocolAddress))
         {
             var isGateway = false;
@@ -257,6 +258,5 @@ public class NetworkScanner
             token.ThrowIfCancellationRequested();
             _ = view.MainForm.Invoke(() => view.ToolStripStatusScan.Text = ArpTable.Instance.Count + " device(s) found");
         }
-        return Task.CompletedTask;
     }
 }

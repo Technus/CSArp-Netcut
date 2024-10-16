@@ -21,6 +21,8 @@ using CSArp.View;
 using CSArp.Model.Utilities;
 using CSArp.Model.Extensions;
 using System.Diagnostics;
+using SharpPcap.Npcap;
+using System.Threading.Tasks;
 
 namespace CSArp.Presenter;
 
@@ -61,8 +63,7 @@ public class Presenter
     private readonly IView _view;
     private IPAddress gatewayIpAddress = null;
     private PhysicalAddress gatewayPhysicalAddress;
-    private GatewayIPAddressInformation gatewayInfo;
-    private WinPcapDevice selectedDevice = null;
+    private NpcapDevice selectedDevice = null;
     private string selectedInterfaceFriendlyName;
     #endregion
 
@@ -79,7 +80,7 @@ public class Presenter
     /// Populate the LAN clients
     /// </summary>
     /// // TODO: Use the device interface, not the name
-    public void StartNetworkScan()
+    public async ValueTask StartNetworkScan()
     {
         if (string.IsNullOrEmpty(SelectedInterfaceFriendlyName)) //if a network interface has been selected
         {
@@ -90,7 +91,7 @@ public class Presenter
         if (_view.ToolStripStatusScan.Text.IndexOf("Scanning") != -1) //if a scan isn't active already
             return;
 
-        ArpSpoofer.StopAll(); // first disengage spoofing threads
+        await ArpSpoofer.StopAll(); // first disengage spoofing threads
         _ = _view.MainForm.BeginInvoke(new Action(() =>
         {
             _view.ToolStripStatus.Text = "Ready";
@@ -98,7 +99,7 @@ public class Presenter
         NetworkScanner.StartScan(_view, selectedDevice, gatewayIpAddress);
     }
 
-    public void StopNetworkScan() => NetworkScanner.StopScan();
+    public ValueTask StopNetworkScan() => NetworkScanner.StopScan();
 
     /// <summary>
     /// Disconnects clients selected in the listview
@@ -142,9 +143,9 @@ public class Presenter
     /// <summary>
     /// Reconnects clients by stopping fake ARP requests
     /// </summary>
-    public void ReconnectClients() //selective reconnection not availabe at this time and frankly, not that useful
+    public async ValueTask ReconnectClients() //selective reconnection not availabe at this time and frankly, not that useful
     {
-        ArpSpoofer.StopAll();
+        await ArpSpoofer.StopAll();
         foreach (ListViewItem entry in _view.ClientListView.Items)
         {
             entry.SubItems[2].Text = "On";
@@ -154,7 +155,7 @@ public class Presenter
 
     public void GetGatewayInformation()
     {
-        gatewayInfo = NetworkInterface
+        var gatewayInfo = NetworkInterface
             .GetAllNetworkInterfaces()
             .First(i => i.Name == SelectedInterfaceFriendlyName)
             .GetIPProperties().GatewayAddresses
@@ -166,7 +167,7 @@ public class Presenter
 
     public void StopCapture()
     {
-        if (selectedDevice.Opened)
+        if (selectedDevice?.Opened ?? false)
         {
             try
             {
