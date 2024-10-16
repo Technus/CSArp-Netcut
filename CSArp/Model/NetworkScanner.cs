@@ -176,7 +176,7 @@ public class NetworkScanner
             var addressList = new List<IPAddress> {
                             gatewayIp
                         }; // Ensure the ARP request is sent to gateway first, even if it means sending twice
-            addressList.AddRange(subnet.ToList());
+            addressList.AddRange(subnet.AsEnumerable());
 
             // Remove current address from the list and add to ARP table statically
             _ = addressList.Remove(networkAdapter.ReadCurrentIpV4Address());

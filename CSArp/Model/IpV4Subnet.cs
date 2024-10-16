@@ -58,12 +58,10 @@ public class IPV4Subnet
         return firstAddressAsUint <= address && address <= lastAddressAsUint;
     }
 
-    public List<IPAddress> ToList()
+    public IEnumerable<IPAddress> AsEnumerable()
     {
-        var list = new List<IPAddress>();
         for (var adr = firstAddressAsUint; adr <= lastAddressAsUint; adr++)
-            list.Add(ConvertToIPv4Address(adr));
-        return list;
+            yield return ConvertToIPv4Address(adr);
     }
 
     private static uint ConvertToUint(IPAddress ipAddress)
