@@ -4,24 +4,23 @@ using SharpPcap;
 using PacketDotNet;
 using System.Net.NetworkInformation;
 using System.Threading;
-using SharpPcap.WinPcap;
 using CSArp.Model.Utilities;
 using CSArp.Model.Extensions;
 using System.Threading.Tasks;
-using SharpPcap.Npcap;
 using CSArp.View;
 using System.Linq;
+using SharpPcap.LibPcap;
 
 namespace CSArp.Model;
 
 public class Spoofer
 {
     private const string prefix = "Spoof";
-    public NpcapDevice NetworkAdapter { get; set; }
+    public LibPcapLiveDevice NetworkAdapter { get; set; }
 
     private Dictionary<IPAddress, PhysicalAddress> engagedclientlist;
 
-    public Task Start(IView view, Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, NpcapDevice networkAdapter, CancellationToken token = default)
+    public Task Start(IView view, Dictionary<IPAddress, PhysicalAddress> targetlist, IPAddress gatewayipaddress, PhysicalAddress gatewaymacaddress, LibPcapLiveDevice networkAdapter, CancellationToken token = default)
     {
         engagedclientlist = [];
         if (!networkAdapter.Opened)
@@ -68,7 +67,7 @@ public class Spoofer
         engagedclientlist?.Clear();
     }
 
-    private static async Task SendSpoofingPackets(IPAddress ipAddress, PhysicalAddress physicalAddress, EthernetPacket ethernetpacketforgatewayrequest, NpcapDevice captureDevice, CancellationToken token = default)
+    private static async Task SendSpoofingPackets(IPAddress ipAddress, PhysicalAddress physicalAddress, EthernetPacket ethernetpacketforgatewayrequest, LibPcapLiveDevice captureDevice, CancellationToken token = default)
     {
         DebugOutput.Print($"Spoofing target {physicalAddress} @ {ipAddress}");
         try

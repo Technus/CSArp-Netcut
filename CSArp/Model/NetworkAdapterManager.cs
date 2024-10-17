@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SharpPcap;
-using SharpPcap.Npcap;
+using SharpPcap.LibPcap;
 
 namespace CSArp.Model;
 
@@ -11,9 +11,9 @@ public static class NetworkAdapterManager
     private static CaptureDeviceList _networkAdapters;
     public static CaptureDeviceList NetworkAdapters => _networkAdapters ??= CaptureDeviceList.Instance;
 
-    public static IReadOnlyList<NpcapDevice> WinPcapDevices => 
+    public static IReadOnlyList<LibPcapLiveDevice> WinPcapDevices => 
         NetworkAdapters
-            .OfType<NpcapDevice>()
+            .OfType<LibPcapLiveDevice>()
             .ToList()
             .AsReadOnly();
 }

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System;
-using SharpPcap.Npcap;
+using SharpPcap.LibPcap;
 
 namespace CSArp.Model.Extensions;
 
@@ -13,7 +13,7 @@ namespace CSArp.Model.Extensions;
 /// </summary>
 public static class NpcapDeviceExtensions
 {
-    public static IPV4Subnet ReadCurrentSubnet(this NpcapDevice device)
+    public static IPV4Subnet ReadCurrentSubnet(this LibPcapLiveDevice device)
     {
         var addresses = device.Addresses.First(addr => addr.Addr.ipAddress != null);
         var currentAddress = addresses.Addr.ipAddress;
@@ -22,7 +22,7 @@ public static class NpcapDeviceExtensions
         return new IPV4Subnet(currentAddress, subnetMask);
     }
 
-    public static IPAddress ReadCurrentIpV4Address(this NpcapDevice device)
+    public static IPAddress ReadCurrentIpV4Address(this LibPcapLiveDevice device)
     {
         // Type information in WinPcap is plain wrong. IPv4 addresses are assumed to be IPv6 and most of the time @type is just null.
         // So, we are querying address list to find related information by looking at current behavior.
@@ -30,7 +30,7 @@ public static class NpcapDeviceExtensions
     }
 
     [Obsolete("Use device.MacAddressworks instead")]
-    public static PhysicalAddress ReadCurrentPhysicalAddress(this NpcapDevice device)
+    public static PhysicalAddress ReadCurrentPhysicalAddress(this LibPcapLiveDevice device)
     {
         // Type information in WinPcap is plain wrong. IPv4 addresses are assumed to be IPv6 and most of the time @type is just null.
         // So, we are querying address list to find related information by looking at current behavior.

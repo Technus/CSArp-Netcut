@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using SharpPcap;
-using SharpPcap.WinPcap;
 using System.Net;
 using System.Net.NetworkInformation;
 using CSArp.Model;
@@ -21,8 +20,8 @@ using CSArp.View;
 using CSArp.Model.Utilities;
 using CSArp.Model.Extensions;
 using System.Diagnostics;
-using SharpPcap.Npcap;
 using System.Threading.Tasks;
+using SharpPcap.LibPcap;
 
 namespace CSArp.Presenter;
 
@@ -63,7 +62,7 @@ public class Presenter
     private readonly IView _view;
     private IPAddress gatewayIpAddress = null;
     private PhysicalAddress gatewayPhysicalAddress;
-    private NpcapDevice selectedDevice = null;
+    private LibPcapLiveDevice selectedDevice = null;
     private string selectedInterfaceFriendlyName;
     #endregion
 
@@ -159,7 +158,7 @@ public class Presenter
         gatewayIpAddress = gatewayInfo.Address;
     }
 
-    public void StartCapture() => selectedDevice.Open(DeviceMode.Promiscuous, 1000); //open device with 1000ms timeout
+    public void StartCapture() => selectedDevice.Open(DeviceModes.Promiscuous, 1000); //open device with 1000ms timeout
 
     public void StopCapture()
     {
