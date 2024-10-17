@@ -90,7 +90,7 @@ public class Presenter
         if (_view.ToolStripStatusScan.Text.IndexOf("Scanning") != -1) //if a scan isn't active already
             return;
 
-        await ArpSpoofer.StopAll(_view); // first disengage spoofing threads
+        await ArpSpoofer.StopAll(_view); // first disengage spoofing tasks
         NetworkScanner.StartScan(_view, selectedDevice, gatewayIpAddress);
     }
 

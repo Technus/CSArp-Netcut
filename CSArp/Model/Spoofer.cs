@@ -75,13 +75,13 @@ public class Spoofer
             while (!token.IsCancellationRequested)
             {
                 captureDevice.SendPacket(ethernetpacketforgatewayrequest);
-                await Task.Delay(10);
+                await Task.Delay(100);
             }
         }
         catch (PcapException ex)
         {
             DebugOutput.Print($"PcapException @ DisconnectReconnect.Disconnect() [{ex.Message}]");
         }
-        DebugOutput.Print($"Spoofing thread @ DisconnectReconnect.Disconnect() for {physicalAddress} @ {ipAddress} is terminating.");
+        DebugOutput.Print($"Spoofing task @ DisconnectReconnect.Disconnect() for {physicalAddress} @ {ipAddress} is terminating.");
     }
 }

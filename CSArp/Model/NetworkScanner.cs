@@ -165,7 +165,7 @@ public class NetworkScanner
             view.ToolStripStatusScan.Text = "...";
             view.ToolStripProgressBarScan.Value = 0;
         });
-        return TaskBuffer.StopThreadByPrefix(prefix); // kill existing threads
+        return TaskBuffer.StopThreadByPrefix(prefix); // kill existing tasks
     }
 
     // TODO: Start spoofing for devices regarding online status.
@@ -232,7 +232,7 @@ public class NetworkScanner
         }
         catch (OutOfMemoryException ex)
         {
-            DebugOutput.Print($"PcapException @ GetClientList.InitiateArpRequestQueue() out of memory. \nTotal number of threads {TaskBuffer.Count}\nTotal number of alive threads {TaskBuffer.AliveCount}\n[{ex.Message}]");
+            DebugOutput.Print($"PcapException @ GetClientList.InitiateArpRequestQueue() out of memory. \nTotal number of tasks {TaskBuffer.Count}\nTotal number of alive tasks {TaskBuffer.AliveCount}\n[{ex.Message}]");
         }
         catch (Exception ex)
         {
