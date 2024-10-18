@@ -4,18 +4,21 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CSArp.Model;
-using CSArp.Model.Utilities;
+using CSArp.Service;
+using CSArp.Service.Model;
+using CSArp.Service.Model.Utilities;
+using CSArp.Service.Presenter;
+using CSArp.Service.View;
 
 namespace CSArp.View;
 
 public partial class ScannerForm : Form, IView
 {
-    private readonly Presenter.Presenter _controller;
+    private readonly Presenter _controller;
     public ScannerForm()
     {
         InitializeComponent();
-        _controller = new Presenter.Presenter(this);
+        _controller = new Presenter(this);
         DebugOutput.Init(this);
     }
 
@@ -78,7 +81,7 @@ public partial class ScannerForm : Form, IView
     {
         if (e.KeyCode == Keys.Enter && ClientListView.SelectedItems.Count == 1)
         {
-            ClientListView.SelectedItems[0].SubItems[3].Text = ToolStripTextBoxClientName.Text;
+            ClientListView.SelectedItems[0].SubItems[Columns.HostName].Text = ToolStripTextBoxClientName.Text;
             ToolStripTextBoxClientName.Text = "";
         }
     }
@@ -177,7 +180,7 @@ public partial class ScannerForm : Form, IView
 
     private async ValueTask ExitGracefully()
     {
-        await TaskBuffer.Clear();
+        await TaskBuffer.DisposeAsync();
         _controller.StopCapture();
     }
     #endregion

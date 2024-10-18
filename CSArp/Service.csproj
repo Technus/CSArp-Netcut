@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
-		<LangVersion>Latest</LangVersion>
 		<OutputType>WinExe</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -13,6 +12,7 @@
 		<Content Include="icon.ico" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Ardalis.SmartEnum" Version="8.1.0" />
 		<PackageReference Include="SharpPcap" Version="6.3.0" />
 	</ItemGroup>
 	<ItemGroup>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace CSArp.Model;
+namespace CSArp.Service.Model;
 
 public class IPV4Subnet
 {

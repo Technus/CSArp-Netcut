@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 using System.Net;
 using System.Collections.Concurrent;
 
-namespace CSArp.Model;
+namespace CSArp.Service.Model;
 
 public sealed class ArpTable
 {
@@ -26,9 +26,9 @@ public sealed class ArpTable
         return key;
     }
 
-    public bool ContainsKey(IPAddress ipAddress) => 
+    public bool ContainsKey(IPAddress ipAddress) =>
         _dictionary.ContainsKey(ipAddress);
 
-    public void Clear() => 
+    public void Clear() =>
         _dictionary.Clear();
 }

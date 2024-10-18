@@ -15,15 +15,16 @@ using System.Windows.Forms;
 using SharpPcap;
 using System.Net;
 using System.Net.NetworkInformation;
-using CSArp.Model;
-using CSArp.View;
-using CSArp.Model.Utilities;
-using CSArp.Model.Extensions;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SharpPcap.LibPcap;
+using CSArp.Service.Model;
+using CSArp.Service.Model.Extensions;
+using CSArp.Service.View;
+using CSArp.Service;
+using CSArp.Service.Model.Utilities;
 
-namespace CSArp.Presenter;
+namespace CSArp.Service.Presenter;
 
 public class Presenter
 {
@@ -107,8 +108,8 @@ public class Presenter
 
         foreach (ListViewItem item in _view.ClientListView.Items)
         {
-            if (item.SubItems[0].Text == gatewayIpAddress.ToString())
-                gatewayPhysicalAddress = item.SubItems[1].Text.Parse();
+            if (item.SubItems[Columns.Address].Text == gatewayIpAddress.ToString())
+                gatewayPhysicalAddress = item.SubItems[Columns.PhysicalAddess].Text.Parse();
         }
 
         if (gatewayPhysicalAddress == null)
@@ -123,15 +124,15 @@ public class Presenter
         });
 
         var targetlist = new Dictionary<IPAddress, PhysicalAddress>();
-        var parseindex = 0;
-        foreach (ListViewItem listitem in _view.ClientListView.SelectedItems)
-        {
-            targetlist.Add(IPAddress.Parse(listitem.SubItems[0].Text), listitem.SubItems[1].Text.Parse());
-            _ = _view.MainForm.BeginInvoke(new Action(() =>
-              {
-                  _view.ClientListView.SelectedItems[parseindex++].SubItems[2].Text = "Off";
-              }));
-        }
+        //var parseindex = 0;
+        //foreach (ListViewItem listitem in _view.ClientListView.SelectedItems)
+        //{
+        //    targetlist.Add(IPAddress.Parse(listitem.SubItems[Columns.Address].Text), listitem.SubItems[Columns.PhysicalAddess].Text.Parse());
+        //    _ = _view.MainForm.BeginInvoke(new Action(() =>
+        //      {
+        //          _view.ClientListView.SelectedItems[parseindex++].SubItems[Columns.Status].Text = "Off";
+        //      }));
+        //}
         ArpSpoofer.Start(_view, targetlist, gatewayIpAddress, gatewayPhysicalAddress, selectedDevice);
     }
 
@@ -141,10 +142,10 @@ public class Presenter
     public async ValueTask ReconnectClients() //selective reconnection not availabe at this time and frankly, not that useful
     {
         await ArpSpoofer.StopAll(_view);
-        foreach (ListViewItem entry in _view.ClientListView.Items)
-        {
-            entry.SubItems[2].Text = "On";
-        }
+        //foreach (ListViewItem entry in _view.ClientListView.Items)
+        //{
+        //    entry.SubItems[2].Text = "On";
+        //}
         _view.ToolStripStatus.Text = "Stopped";
     }
 

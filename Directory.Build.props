@@ -1,0 +1,24 @@
+<Project>
+	<PropertyGroup Label="Common Properties">
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>1.4.2.0</Version>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>Latest</LangVersion>
+
+		<CustomNamePrefix>CSArp</CustomNamePrefix>
+		<AssemblyName>$(CustomNamePrefix).$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>$(CustomNamePrefix).$(MSBuildProjectName.Replace(" ", ""))</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Product>CSArp</Product>
+	</PropertyGroup>
+
+	<ItemGroup Label="Common References">
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.32.0.97167">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>

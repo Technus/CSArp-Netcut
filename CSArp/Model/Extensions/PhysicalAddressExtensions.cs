@@ -2,7 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Linq;
 
-namespace CSArp.Model.Extensions;
+namespace CSArp.Service.Model.Extensions;
 
 public static class PhysicalAddressExtensions
 {

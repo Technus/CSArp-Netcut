@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CSArp.View;
 
-namespace CSArp;
+namespace CSArp.Service;
 
 public static class Program
 {

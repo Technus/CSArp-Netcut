@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using CSArp.View;
+using CSArp.Service.View;
 
-namespace CSArp.Model.Utilities;
+namespace CSArp.Service.Model.Utilities;
 
 public static class DebugOutput
 {

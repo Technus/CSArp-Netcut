@@ -4,14 +4,14 @@ using SharpPcap;
 using PacketDotNet;
 using System.Net.NetworkInformation;
 using System.Threading;
-using CSArp.Model.Utilities;
-using CSArp.Model.Extensions;
 using System.Threading.Tasks;
-using CSArp.View;
 using System.Linq;
 using SharpPcap.LibPcap;
+using CSArp.Service.Model.Extensions;
+using CSArp.Service.View;
+using CSArp.Service.Model.Utilities;
 
-namespace CSArp.Model;
+namespace CSArp.Service.Model;
 
 public class Spoofer
 {
@@ -33,8 +33,11 @@ public class Spoofer
                 for (var i = 0; i < view.ClientListView.Items.Count; i++)
                 {
                     var item = view.ClientListView.Items[i];
-                    if (item.SubItems[1].Text == data.Value.ToString("-") && item.SubItems[0].Text == data.Key.ToString())
-                        item.SubItems[3].Text = "On";
+                    if (item.SubItems[Columns.PhysicalAddess].Text == data.Value.ToString("-") &&
+                        item.SubItems[Columns.Address].Text == data.Key.ToString())
+                    {
+                        item.SubItems[Columns.Spoof].Text = "On";
+                    }
                 }
             }
         });
@@ -57,10 +60,10 @@ public class Spoofer
     {
         view.MainForm.Invoke(() =>
         {
-            for (int i = 0; i < view.ClientListView.Items.Count; i++)
+            for (var i = 0; i < view.ClientListView.Items.Count; i++)
             {
                 var item = view.ClientListView.Items[i];
-                item.SubItems[3].Text = "Off";
+                item.SubItems[Columns.Spoof].Text = "Off";
             }
         });
         await TaskBuffer.StopThreadByName(prefix);

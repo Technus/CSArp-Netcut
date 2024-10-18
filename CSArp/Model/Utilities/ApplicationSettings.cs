@@ -5,8 +5,9 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Text;
+using CSArp.Service;
 
-namespace CSArp.Model.Utilities;
+namespace CSArp.Service.Model.Utilities;
 
 public static class ApplicationSettings
 {
@@ -85,8 +86,8 @@ public static class ApplicationSettings
             var listviewdictionary = new Dictionary<string, string>();
             foreach (ListViewItem listviewitem in listview.Items)
             {
-                var macaddress = listviewitem.SubItems[1].Text;
-                var clientname = listviewitem.SubItems[3].Text;
+                var macaddress = listviewitem.SubItems[Columns.PhysicalAddess].Text;
+                var clientname = listviewitem.SubItems[Columns.HostName].Text;
                 if (clientname != "" && !listviewdictionary.Contains(new KeyValuePair<string, string>(macaddress, clientname)))
                     listviewdictionary.Add(macaddress, clientname);
             }

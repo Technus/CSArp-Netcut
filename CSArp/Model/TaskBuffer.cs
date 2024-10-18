@@ -5,28 +5,46 @@ using Thread = (System.Threading.CancellationTokenSource cts, System.Threading.T
 using System.Threading.Tasks;
 using System;
 
-namespace CSArp.Model;
+namespace CSArp.Service.Model;
 
 public static class TaskBuffer
 {
+    private static SemaphoreSlim _semaphore = new(1, 1);
+
     public static int Count => buffer.Count;
 
     public static int AliveCount => buffer.Count(t => !t.task.IsCompleted);
 
     private static readonly List<Thread> buffer = [];
 
-    public static Task Add(CancellationTokenSource cts, Func<Task> task, string name = default)
+    public static async ValueTask DisposeAsync()
     {
-        var t = task();
-        buffer.Add((cts, t, name));
-        return t;
+        await _semaphore.WaitAsync();
+        await Clear();
+        _semaphore.Dispose();
+    }
+
+    public static async Task Add(CancellationTokenSource cts, Func<Task> task, string name = default)
+    {
+        try
+        {
+            await _semaphore.WaitAsync();
+            var t = task();
+            buffer.Add((cts, t, name));
+            _semaphore.Release();
+        }
+        catch (ObjectDisposedException)
+        {
+            //Cancelled
+        }
+
     }
 
     private static async ValueTask Remove(Thread thread)
     {
         await thread.cts.CancelAsync();
         _ = buffer.Remove(thread);
-        await thread.task;
+        await thread.task.ConfigureAwait(false);
         thread.cts.Dispose();
     }
 

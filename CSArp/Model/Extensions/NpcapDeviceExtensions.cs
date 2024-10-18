@@ -3,8 +3,9 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System;
 using SharpPcap.LibPcap;
+using CSArp.Service.Model;
 
-namespace CSArp.Model.Extensions;
+namespace CSArp.Service.Model.Extensions;
 
 /// <summary>
 /// Getting a readonly collection populated with addreses.
